@@ -1,6 +1,8 @@
 github.com/Jeffail/gabs v1.4.0/go.mod h1:6xMvQMK4k33lb7GUUpaAPh6nKMmemQeg5d4gn7/bOXc=
-github.com/chadius/terosbattleserver v0.0.0-20211011225743-8df71eb43ae3 h1:HKxh/gAhRIBXEL1jTBHLDjIDBTWPebNEtzaiLFIS2iM=
-github.com/chadius/terosbattleserver v0.0.0-20211011225743-8df71eb43ae3/go.mod h1:8I96METFRzt1JPpWTuovF20+9w6adzccSDT+951vH2M=
+github.com/chadius/terosbattleserver v0.0.0-20211012002604-95803030de19 h1:f51pie6IiMGsGdFqxbOF6KxFmt6iI+1TDnNYQenAr84=
+github.com/chadius/terosbattleserver v0.0.0-20211012002604-95803030de19/go.mod h1:8I96METFRzt1JPpWTuovF20+9w6adzccSDT+951vH2M=
+github.com/chadius/terosbattleserver v0.0.0-20211013235149-18be12462dab h1:lq9g66D6Kc8bp2QoTwmj+Of+ZLYCdT+qPtzW1IYKgTE=
+github.com/chadius/terosbattleserver v0.0.0-20211013235149-18be12462dab/go.mod h1:8I96METFRzt1JPpWTuovF20+9w6adzccSDT+951vH2M=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
