@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/chadius/terosbattleserver"
+	"github.com/chadius/terosGameRules"
 	"io"
 	"log"
 	"os"
@@ -19,7 +19,8 @@ func main() {
 	squaddieFile := loadSquaddieRepoYAML(squaddieRepositoryFilename)
 	powerFile := loadPowerRepoYAML(powerRepositoryFilename)
 
-	replayErr := terosbattleserver.ReplayBattleScript(scriptFile, squaddieFile, powerFile, os.Stdout)
+	gameRunner := terosgamerules.GameRules{}
+	replayErr := gameRunner.ReplayBattleScript(scriptFile, squaddieFile, powerFile, os.Stdout)
 	if replayErr != nil {
 		println(replayErr.Error())
 		log.Fatal(replayErr)
