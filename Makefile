@@ -7,4 +7,4 @@ help:
 .PHONY=help
 
 run: ## Run the script
-	go run .
+	go run . -script scripts/battle.yml -squaddie data/squaddieDatabase.yml -power data/powerDatabase.yml
