@@ -3,22 +3,30 @@ package command
 import (
 	"bytes"
 	"github.com/chadius/terosgamerules"
+	"github.com/chadius/terosgameserver/rpc/github.com/chadius/teros_game_server"
+	"net/http"
 	"reflect"
 )
 
 // Processor processes commands.
 type Processor struct {
-	localRulesStrategy terosgamerules.RulesStrategy
+	localRulesStrategy  terosgamerules.RulesStrategy
+	remoteRulesStrategy teros_game_server.TerosGameServer
 }
 
 // NewCommandProcessor returns a new Processor with the given local and remote game rulesets.
-func NewCommandProcessor(remoteGameRuleset, localGameRuleset terosgamerules.RulesStrategy) *Processor {
+func NewCommandProcessor(remoteGameRuleset teros_game_server.TerosGameServer, localGameRuleset terosgamerules.RulesStrategy) *Processor {
 	if localGameRuleset == nil || reflect.ValueOf(localGameRuleset).IsNil() {
 		localGameRuleset = &terosgamerules.GameRules{}
 	}
 
+	if remoteGameRuleset == nil || reflect.ValueOf(remoteGameRuleset).IsNil() {
+		remoteGameRuleset = teros_game_server.NewTerosGameServerProtobufClient("http://localhost:8080", &http.Client{})
+	}
+
 	return &Processor{
-		localRulesStrategy: localGameRuleset,
+		localRulesStrategy:  localGameRuleset,
+		remoteRulesStrategy: remoteGameRuleset,
 	}
 }
 
@@ -38,6 +46,11 @@ func (p Processor) useLocalPackageToApplyRuleset(args *RulesetArguments) error {
 		powerDataReader,
 		args.OutputMessage,
 	)
+}
+
+// GetRemoteRuleset is a getter
+func (p Processor) GetRemoteRuleset() teros_game_server.TerosGameServer {
+	return p.remoteRulesStrategy
 }
 
 // GetLocalRuleset is a getter.

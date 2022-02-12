@@ -4,12 +4,16 @@ go 1.17
 
 require (
 	github.com/chadius/terosgamerules v0.0.0-20220123210839-5ce7c5756726
+	github.com/chadius/terosgameserver v0.0.0-20220209010618-ba13611f3d47
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.4.1
 	github.com/stretchr/testify v1.7.0
+	github.com/twitchtv/twirp v8.1.1+incompatible
+	google.golang.org/protobuf v1.23.0
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.3.0 // indirect
 	golang.org/x/sys v0.0.0-20210330210617-4fbd30eecc44 // indirect

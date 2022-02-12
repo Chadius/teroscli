@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"errors"
 	"github.com/chadius/terosgamerules"
+	"github.com/chadius/terosgameserver/rpc/github.com/chadius/teros_game_server"
 	"github.com/cserrant/terosCLI/command"
 	"github.com/cserrant/terosCLI/rulesstrategyfakes"
+	"github.com/cserrant/terosCLI/terosgameserverfakes"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"io"
+	"net/http"
 	"reflect"
 	"testing"
 )
@@ -123,4 +126,68 @@ func (suite *InjectGameRulesetSuite) TestWhenLocalGameRulesetIsInjected_ThenUses
 		reflect.TypeOf(commandProcessor.GetLocalRuleset()),
 		reflect.TypeOf(injectedRuleset),
 	)
+}
+
+func (suite *InjectGameRulesetSuite) TestWhenRemoteGameRulesetIsInjected_ThenUsesGivenObject() {
+	// Setup
+	injectedRuleset := &terosgameserverfakes.FakeTerosGameServer{}
+
+	// Act
+	commandProcessor := command.NewCommandProcessor(injectedRuleset, nil)
+
+	// Assert
+	require := require.New(suite.T())
+	require.Equal(
+		reflect.TypeOf(commandProcessor.GetRemoteRuleset()),
+		reflect.TypeOf(injectedRuleset),
+	)
+}
+
+func (suite *InjectGameRulesetSuite) TestWhenNoRemoteRemoteGameRulesetIsInjected_ThenUsesDefaultObject() {
+	//Setup
+	productionClient := teros_game_server.NewTerosGameServerProtobufClient("http://localhost:8080", &http.Client{})
+
+	//Act
+	commandProcessor := command.NewCommandProcessor(nil, nil)
+
+	//Assert
+	require := require.New(suite.T())
+	require.Equal(
+		reflect.TypeOf(commandProcessor.GetRemoteRuleset()),
+		reflect.TypeOf(productionClient),
+	)
+}
+
+type LocalPackageErrorReportingSuite struct {
+	suite.Suite
+	fakeLocalImageTransformerClient rulesstrategyfakes.FakeRulesStrategy
+}
+
+func TestLocalPackageErrorReportingSuite(t *testing.T) {
+	suite.Run(t, new(LocalPackageErrorReportingSuite))
+}
+
+func (suite *LocalPackageErrorReportingSuite) TestWhenLocalPackageReturnsError_ThenReturnError() {
+	// Setup
+	suite.fakeLocalImageTransformerClient = rulesstrategyfakes.FakeRulesStrategy{
+		ReplayBattleScriptStub: func(inputImageDataByteStream, formulaDataByteStream, outputSettingsDataByteStream io.Reader, output io.Writer) error {
+			return errors.New("irrelevant error")
+		},
+	}
+
+	var dummyOutputImageData bytes.Buffer
+
+	// Act
+	commandProcessor := command.NewCommandProcessor(nil, &suite.fakeLocalImageTransformerClient)
+	err := commandProcessor.ApplyRulesetToData(&command.RulesetArguments{
+		ScriptData:    nil,
+		SquaddieData:  nil,
+		PowerData:     nil,
+		OutputMessage: &dummyOutputImageData,
+	})
+
+	// Require
+	require := require.New(suite.T())
+	require.Error(err, "No error was found")
+	require.Equal("irrelevant error", err.Error(), "error message does not match")
 }
